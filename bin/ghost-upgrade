@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ * Command-line tool for upgrading Ghost.  This is all fairly
+ * simple synchronous code all thrown together into one file.
+ * See http://support.ghost.org/how-to-upgrade/ for more details
+ */
+
+const meow = require('meow'),
+  fs = require('fs-extra'),
+  Download = require('download'),
+  execSync = require('child_process').execSync,
+  Promise = require('bluebird');
+
+//
+// command-line args setup
+//
+
+const cli = meow(`
+Usage
+  $ ghost-upgrade <options>
+
+Options
+   -y, --yes  Yes I want to really upgrade and have prepared for it as
+              discussed in http://support.ghost.org/how-to-upgrade/
+  -l, --location  Location of Ghost install
+  -c, --copy-casper Whether to copy Casper files
+
+Examples
+  $ ghost-upgrade --yes --location /var/www/ghost --copy-casper
+`, {
+  alias: {
+    y: 'yes'
+  }
+});
+
+//
+// validation of command-line args
+//
+
+if (! cli.flags.yes) {
+  console.log(`
+  The --yes flag was not used.  This must be passed to ghost-upgrade
+  to indicate that you have done the following:
+  * Used the export tool on the labs page to create a .json file
+  * Made sure you can restart Node properly
+  * Considered the version jump
+  Read more about these in the docs: http://support.ghost.org/how-to-upgrade/
+  `);
+  cli.showHelp();
+}
+
+const location = cli.flags.location;
+if (! location) {
+  console.log(`
+  --location must be given
+  `);
+  cli.showHelp();
+}
+
+//
+// time to upgrade
+//
+
+// set up some promises first for the coroutine below it where the
+// real work gets done
+const upgradeTemp = location + '/upgrade-temp';
+const downloadLatest = new Promise(function(resolve, reject) {
+  const download = new Download({mode: '755', extract:true});
+  download.get('https://ghost.org/zip/ghost-latest.zip')
+    .dest(upgradeTemp)
+    .run(resolve);
+});
+
+Promise.coroutine(function*() {
+  console.log('Removing any old upgrade files from upgrade-temp');
+  // we use sync in parts here because we're a CLI, don't really
+  // need to be all fancy
+  fs.removeSync(upgradeTemp);
+
+  const backupFolder = 'backup-content-' + Date.now();
+  console.log('Backing up content to ' + backupFolder);
+  fs.copySync(location + '/content', location + '/' + backupFolder);
+
+  console.log('Downloading ghost-latest.zip');
+  yield downloadLatest;
+
+  console.log('Removing core');
+  fs.removeSync(location + '/core');
+
+  console.log('Copying new core');
+  fs.copySync(upgradeTemp + '/core', location + '/core');
+
+  console.log('Copying new JS and JSON files');
+  fs.copySync(upgradeTemp, location, { clobber:true, filter:/\.js$|\.json$/ });
+
+  if (cli.flags.copyCasper) {
+    console.log('Copying Casper theme files');
+    fs.copySync(upgradeTemp + '/content/themes/casper',
+      location + '/content/themes/casper',
+      { clobber:true });
+  }
+  else {
+    console.log('Since --copy-casper not specified, skipping the copy',
+      'of Casper theme files');
+  }
+
+  // FIXME: needed as option? chown -R ghost:ghost *
+
+  console.log('Upgrading dependencies');
+  execSync('npm install --production', {cwd:location, stdio:[0,1,2]});
+
+  console.log('All done. Make sure to now restart Ghost!');
+})();
+

@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ * Not a full test suite but just a sanity test that the command-line
+ * tool can still run without giving errors.  This will install
+ * Ghost in ghost-test and then run "upgrades" on this location,
+ * ensuring that the command-line tool runs through everything.
+ * It does NOT do:
+ * - automatic testing that the test upgrade blog still actually works
+ * - testing of different source and target versions
+ * - a full test of different combinations
+ * - unit testing
+ * - probably a lot more
+ */
+
+const fs = require('fs-extra'),
+  execSync = require('child_process').execSync;
+
+console.log('Getting a copy of Ghost in ghost-test (if needed)');
+execSync('git clone https://github.com/TryGhost/Ghost ghost-test || ' +
+ 'echo "git clone failed, assuming already setup"', {stdio:[0,1,2]});
+
+console.log('Running npm install on ghost-test');
+execSync('npm install --production', {cwd:'ghost-test', stdio:[0,1,2]});
+
+console.log('Upgrading on ghost-test');
+execSync('bin/ghost-upgrade --yes --location ghost-test', {stdio:[0,1,2]});
+
+console.log(`
+  Testing complete!
+
+  To more fully ensure the tool worked, please do the following:
+  cd ghost-test
+  npm start
+
+  Then fire up a browser and ensure that things show up at
+  http://localhost:2368/ghost
+`);
+
+

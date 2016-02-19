@@ -1,0 +1,41 @@
+{
+  "name": "ghost-upgrade",
+  "description": "Command-line tool for upgrading Ghost",
+  "version": "1.0.0",
+  "author": "Brian Deitte",
+  "reveal": "true",
+  "contributors": [
+    "Brian Deitte <bdeitte@gmail.com>"
+  ],
+  "keywords": [
+    "ghost"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bdeitte/ghost-upgrade.git"
+  },
+  "bugs": {
+    "url": "git://github.com/bdeitte/ghost-upgrade/issues"
+  },
+  "bin": {
+    "ghost-upgrade": "./bin/ghost-upgrade"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "test": "./test/sanity-checks",
+    "pretest": "npm run lint",
+    "lint": "jshint bin/* test/*"
+  },
+  "dependencies": {
+    "bluebird": "3.3.x",
+    "download": "4.4.x",
+    "fs-extra": "0.26.x",
+    "meow": "3.7.x"
+  },
+  "devDependencies": {
+    "jshint": "2.x"
+  },
+  "license": "MIT"
+}
