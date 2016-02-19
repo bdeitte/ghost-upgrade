@@ -63,7 +63,7 @@ if (! location) {
 // time to upgrade
 //
 
-// set up some promises first for the coroutine below it where the
+// set up a promise first for the coroutine below it where the
 // real work gets done
 const upgradeTemp = location + '/upgrade-temp';
 const downloadLatest = new Promise(function(resolve, reject) {
@@ -84,6 +84,7 @@ Promise.coroutine(function*() {
   fs.copySync(location + '/content', location + '/' + backupFolder);
 
   console.log('Downloading ghost-latest.zip');
+  // amusingly enough, the one and only async call!
   yield downloadLatest;
 
   console.log('Removing core');

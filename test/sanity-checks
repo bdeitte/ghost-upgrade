@@ -25,7 +25,8 @@ console.log('Running npm install on ghost-test');
 execSync('npm install --production', {cwd:'ghost-test', stdio:[0,1,2]});
 
 console.log('Upgrading on ghost-test');
-execSync('bin/ghost-upgrade --yes --location ghost-test', {stdio:[0,1,2]});
+execSync('bin/ghost-upgrade --yes --location ghost-test --copy-casper',
+  {stdio:[0,1,2]});
 
 console.log(`
   Testing complete!
