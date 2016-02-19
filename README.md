@@ -24,6 +24,8 @@ ghost-upgrade
 
 ## Cavaets
 
+This tool requires Node 4 or higher.
+
 This was created to simplify the steps in [a Ghost on AWS guide](https://github.com/bdeitte/ghost-on-aws) and for use on one small personal blog.  Any issues destroying your own blog with these upgrade steps... well, I'm very sorry if that does happen!  It is a very simple program, as you can see in bin/ghost-upgrade.  Make sure you understand what the upgrade really does before running it.
 
 ## Submitting changes
