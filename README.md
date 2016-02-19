@@ -8,16 +8,19 @@ A command-line tool for upgrade Ghost.  It takes the instructions from [Ghost su
 
 ## Usage
 
+```
 npm install -g ghost-upgrade
 ghost-upgrade
+```
 
 ## Command-line options
 
-Options
+```
   -y, --yes  Yes I want to really upgrade and have prepared for it as
              discussed in http://support.ghost.org/how-to-upgrade/
   -l, --location  Location of Ghost install
   -c, --copy-casper Whether to copy Casper files
+```
 
 ## Submitting changes
 
