@@ -1,7 +1,7 @@
 {
   "name": "ghost-upgrade",
   "description": "Command-line tool for upgrading Ghost",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "author": "Brian Deitte",
   "reveal": "true",
   "contributors": [
