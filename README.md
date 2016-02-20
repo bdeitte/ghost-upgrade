@@ -26,6 +26,8 @@ ghost-upgrade
 
 This tool requires Node 4 or higher.
 
+This tool skips one optional step in the manual steps, to chown the files.  If you have a permissions problem after running this script, that's what happened.  Run chown on your ghost directory to change to the needed user to fix up.
+
 This was created to simplify the steps in [a Ghost on AWS guide](https://github.com/bdeitte/ghost-on-aws) and for use on one small personal blog.  Any issues destroying your own blog with these upgrade steps... well, I'm very sorry if that does happen!  It is a very simple program, as you can see in bin/ghost-upgrade.  Make sure you understand what the upgrade really does before running it.
 
 ## Submitting changes
