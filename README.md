@@ -1,3 +1,6 @@
+
+# Obsolete.  Use the Ghost CLI for this now instead.
+
 # ghost-upgrade
 
 A command-line tool for upgrade Ghost.  It takes the instructions from [Ghost support](http://support.ghost.org/how-to-upgrade/) and makes them automagic.
