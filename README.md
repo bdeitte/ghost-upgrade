@@ -5,8 +5,6 @@
 
 A command-line tool for upgrade Ghost.  It takes the instructions from [Ghost support](http://support.ghost.org/how-to-upgrade/) and makes them automagic.
 
-[![Build Status](https://secure.travis-ci.org/bdeitte/ghost-upgrade.png?branch=master)](http://travis-ci.org/bdeitte/ghost-upgrade)
-
 [![NPM](https://nodei.co/npm/ghost-upgrade.png)](https://nodei.co/npm/ghost-upgrade/)
 
 ## Usage
